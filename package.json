@@ -8,7 +8,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "vue": "^3.2.25",
+    "pinia": "2.1",
+    "vue": "3.3",
     "vue-router": "^4.0.14"
   },
   "devDependencies": {
@@ -18,4 +19,3 @@
     "vue-tsc": "^0.29.8"
   }
 }
-  

@@ -1,7 +1,7 @@
 import { createWebHistory, createRouter, RouteRecordRaw } from "vue-router";
 
 import main from '../layouts/main.vue';
-import Takoyaki from '../layouts/Takoyaki.vue';
+import logInPage from '../layouts/Takoyaki.vue';
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -13,11 +13,11 @@ const routes: Array<RouteRecordRaw> = [
         }
     },
     {
-        path: '/add',
-        name: 'add',
+        path: '/logIn',
+        name: 'logIn',
         component: () => import('../views/add.vue'),
         meta:{
-            layout: Takoyaki
+            layout: logInPage
         }
     }
 ]

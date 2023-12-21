@@ -1,66 +1,137 @@
-<script setup lang="ts">
-// This starter template is using Vue 3 <script setup> SFCs
-// Check out https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup
-// import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <div class="main-area">
-    <div class="top-bar">
-      <div class="top-bar-link">
-          <router-link class="top-bar-link-latter" to="/">Home</router-link>
-          &nbsp;
-          <router-link class="top-bar-link-latter" to="/add">Add</router-link>
+  <div class="index-bg">
+    <div class="index-top-bar" />
+    <div class="main-border">
+      <!-- 框線 -->
+      <div class="main-area">
+        <!-- 登入 遊戲 換裝系統顯示 -->
+        <div class="display-area">
+          <component :is="$route.meta.layout || 'div'"> </component>
+          <!-- 變更route -->
+          <!-- <div class="top-bar-link">
+            <router-link class="top-bar-link-latter" to="/">Home</router-link>
+            &nbsp;
+            <router-link class="top-bar-link-latter" to="/add">Add</router-link>
+          </div> -->
+          <!-- route的layout -->
+          <!-- <div class="game-and-info">
+          
+        </div> -->
+        </div>
       </div>
     </div>
-    <!-- <img alt="Vue logo" src="./assets/logo.png" /> -->
-    <div class="game-and-info">
-      <component :is="$route.meta.layout || 'div'">
-      </component>
+    <div>
+      {{ gameDate.page }}
+      <button @click="logInAccount">Change Name</button>
+      <button @click="roomPage">Print Name</button>
     </div>
+    <!-- <HelloWorld msg="Hello Vue 3 + TypeScript + Vite x" /> -->
+    <div class="index-bottom-bar" />
   </div>
-  <!-- <HelloWorld msg="Hello Vue 3 + TypeScript + Vite x" /> -->
 </template>
 
-<style>
-#app {
-  /* 設定你想要的背景顏色 */
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  border: #cbb523 solid 3px;
-  height: 100vh;
-  /* 100% 的視窗高度 */
-  width: 100%;
-  /* 100% 的寬度 */
+<script lang="ts">
+import { defineComponent } from "vue";
+import { useRouter } from "vue-router";
+import { useGameDate } from "@/stores/game_data";
+
+export default defineComponent({
+  setup() {
+    const gameDate = useGameDate();
+    const router = useRouter();
+    return {
+      gameDate,
+      // 登入頁面
+      logInAccount: () => gameDate.setPage("/logIn", router),
+      // 房間頁面
+      roomPage: () => gameDate.setPage("/", router),
+      // printName: () => gameDate.printName(),
+    };
+  },
+});
+</script>
+
+<style scoped>
+/* 最底的底色 */
+.index-bg {
   display: flex;
-  /* 使用彈性佈局 */
   flex-direction: column;
-  /* 垂直排列內容 */
-  justify-content: center;
-  /* 垂直居中內容 */
+  justify-content: space-between;
   align-items: center;
-  /* 水平居中內容 */
-  background-color: #5d5858;
+  min-width: 1200px;
+  height: 100vh;
+  /* 條紋背景 */
+  background: linear-gradient(
+    to right,
+    #fbeed1 0%,
+    #fbeed1 10%,
+    #f3c8af 10%,
+    #f3c8af 20%,
+    #fbeed1 20%,
+    #fbeed1 30%,
+    #f3c8af 30%,
+    #f3c8af 40%,
+    #fbeed1 40%,
+    #fbeed1 70%,
+    #f3c8af 70%,
+    #f3c8af 100%
+  );
+  background-size: 200px 100%;
 }
 
-/* 移除 .main-area 的高度，讓它隨內容自動調整高度 */
+.index-top-bar,
+.index-bottom-bar {
+  width: 100%;
+  height: 30px;
+  background: #362321;
+}
+
+.index-bottom-bar {
+  border-top: 2px solid #1a1212;
+}
+
+.main-border {
+  position: relative;
+  width: 1200px;
+  height: 600px;
+  background-image: url("src/image/game/main_border.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
 .main-area {
-  background-color: #2c3e50;
-  width: 90%;
-  height: 80%;
-  border: green 3px solid;
+  position: absolute;
+  top: 108px;
+  left: 54px;
+  width: 1096px;
+  height: 457px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  background: #f3c8af;
 }
+
+.display-area {
+  width: 100%;
+  height: 100%;
+}
+
+/*  .top-div-design {
+    height: 100px;
+    background: #362321;
+} */
+
+/* 
+
+
 
 .top-bar {
   border: #cbb523 3px solid;
   width: 100%;
   height: 20px;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -69,17 +140,17 @@
 .top-bar-link {
   width: 100%;
   height: 100%;
-  /* border: #12d633 3px solid; */
 }
 
 .top-bar-link-latter {
   color: yellow;
 }
 
-.game-and-info {
+ */
+/* .game-and-info {
   flex-grow: 1;
   width: 100%;
   height: 100%;
   border: #1222d6 3px solid;
-}
+} */
 </style>
