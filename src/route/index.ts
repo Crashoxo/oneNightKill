@@ -2,6 +2,7 @@ import { createWebHistory, createRouter, RouteRecordRaw } from "vue-router";
 
 import main from '../layouts/main.vue';
 import logInPage from '../layouts/Takoyaki.vue';
+import CrateAccount from '../layouts/CrateAccount.vue';
 
 const routes: Array<RouteRecordRaw> = [
     {
@@ -18,6 +19,14 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../views/add.vue'),
         meta:{
             layout: logInPage
+        }
+    },
+    {
+        path: '/crateAccount',
+        name: 'crateAccount',
+        component: () => import('../layouts/CrateAccount.vue'),
+        meta:{
+            layout: CrateAccount
         }
     }
 ]

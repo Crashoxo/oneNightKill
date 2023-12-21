@@ -1,0 +1,25 @@
+// icon吃背景圖專用的樣式，normal是預設，hover是hover，active是選中
+// @mixin iconBackground($normalUrl: 'default.svg', $hoverUrl: '', $activeUrl: '') {
+//     background-image: url($normalUrl);
+//     background-size: contain;
+//     background-repeat: no-repeat;
+//     @if $hoverUrl {
+//         &:hover {
+//             background-image: url($hoverUrl);
+//             cursor: pointer;
+//         }
+//     }
+
+//     @if $activeUrl {
+//         &.active {
+//             background-image: url($activeUrl);
+//         }
+//     }
+// }
+
+// icon 吃svg背景的話，可以用background-color改變svg顏色用的
+// @mixin iconMask($maskUrl: '') {
+//     mask-repeat: no-repeat;
+//     mask-size: contain;
+//     mask-image: url($maskUrl);
+// }

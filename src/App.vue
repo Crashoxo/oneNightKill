@@ -94,7 +94,7 @@ export default defineComponent({
   position: relative;
   width: 1200px;
   height: 600px;
-  background-image: url("src/image/game/main_border.png");
+  background-image: url("@/image/game/main_border.png");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
