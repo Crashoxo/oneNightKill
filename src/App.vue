@@ -53,7 +53,9 @@ const roomPage = () => gameDate.setPage("/", router);
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  min-width: 1200px;
+  min-width: 80rem;
+  min-height: 50rem;
+  width: 100%;
   height: 100vh;
   /* 條紋背景 */
   background: linear-gradient(to right,
@@ -69,7 +71,7 @@ const roomPage = () => gameDate.setPage("/", router);
       #fbeed1 70%,
       #f3c8af 70%,
       #f3c8af 100%);
-  background-size: 200px 100%;
+  background-size: 12.5rem 100%;
 }
 
 
@@ -79,9 +81,9 @@ const roomPage = () => gameDate.setPage("/", router);
 
 .main-border {
   position: relative;
-  width: 1200px;
-  height: 600px;
-  background-image: url("@/image/game/main_border.png");
+  width:75rem;
+	height:37.5rem;
+  background-image: url("@/assets/image/game/main_border.png");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
@@ -89,10 +91,11 @@ const roomPage = () => gameDate.setPage("/", router);
 
 .main-area {
   position: absolute;
-  top: 108px;
-  left: 54px;
-  width: 1096px;
-  height: 457px;
+  /* 裡面的方框對齊 */
+  top:6.75rem;
+	left:3.375rem;
+	width:68.5rem;
+	height:28.5625rem;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

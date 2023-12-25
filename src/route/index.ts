@@ -1,11 +1,10 @@
 import { createWebHistory, createRouter, RouteRecordRaw } from "vue-router";
 
 import logInPage from '../layouts/Main.vue';
-// import logInPage from '../layouts/Takoyaki.vue';
 import CrateAccount from '../layouts/CrateAccount.vue';
 
 const routes: Array<RouteRecordRaw> = [
-    // 登入帳號
+    // 登入帳號 Main.vue
     {
         path: '/',
         name: 'home',

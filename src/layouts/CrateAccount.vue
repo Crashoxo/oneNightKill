@@ -144,14 +144,14 @@ $mind-bg-color: #f5f5f5;
 }
 
 .crate-name-icon {
-  mask-image: url("@/image/Icon/file-signature-solid.svg");
+  mask-image: url("@/assets/icon/file-signature-solid.svg");
 }
 
 .crate-account-icon {
-  mask-image: url("@/image/Icon/user-regular.svg");
+  mask-image: url("@/assets/icon/user-regular.svg");
 }
 
 .crate-password-icon {
-  mask-image: url("@/image/Icon/lock-solid.svg");
+  mask-image: url("@/assets/icon/lock-solid.svg");
 }
 </style>
