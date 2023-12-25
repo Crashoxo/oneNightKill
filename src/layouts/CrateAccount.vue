@@ -23,7 +23,7 @@
       </select>
       <div>Selected value: {{ crateLanguage }}</div>
       <div>{{ crateAccount }} {{ cratePassWord }}</div>
-      <button class="crate-account-check-button" @click="cratedAccount">註冊帳號</button>
+      <button class="crate-account-check-button" @click="cratedAccount">註冊</button>
     </div>
     <!-- 紙娃娃 -->
     <div class="crate-account-doll-area">
@@ -36,6 +36,7 @@
 import { defineComponent, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import DollSystem from "@/components/DollSystem.vue";
+import "../assets/css/tailwind.css";
 import { useGameDate } from "@/stores/game_data";
 
 interface Option {

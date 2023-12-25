@@ -1,9 +1,25 @@
+<script setup lang="ts">
+// 該頁面只畫出主要的框架，還沒有實作功能
+import { useRouter } from "vue-router";
+import { useGameDate } from "@/stores/game_data";
+
+const gameDate = useGameDate();
+const router = useRouter();
+
+// 創建帳號頁面
+const logInAccount = () => gameDate.setPage("/logIn", router);
+// 房間頁面
+const roomPage = () => gameDate.setPage("/", router);
+
+</script>
+
 <template>
   <div class="index-bg">
-    <div class="index-top-bar" />
+    <div class="index-top-bar w-full h-8 bg-orange-950" />
     <div class="main-border">
+
       <!-- 框線 -->
-      <div class="main-area">
+      <div class="main-area bg-secondary">
         <!-- 登入 遊戲 換裝系統顯示 -->
         <div class="display-area">
           <component :is="$route.meta.layout || 'div'"> </component>
@@ -26,30 +42,9 @@
       <button @click="roomPage">Print Name</button>
     </div>
     <!-- <HelloWorld msg="Hello Vue 3 + TypeScript + Vite x" /> -->
-    <div class="index-bottom-bar" />
+    <div class="index-bottom-bar w-full h-8 bg-orange-950" />
   </div>
 </template>
-
-<script lang="ts">
-import { defineComponent } from "vue";
-import { useRouter } from "vue-router";
-import { useGameDate } from "@/stores/game_data";
-
-export default defineComponent({
-  setup() {
-    const gameDate = useGameDate();
-    const router = useRouter();
-    return {
-      gameDate,
-      // 登入頁面
-      logInAccount: () => gameDate.setPage("/logIn", router),
-      // 房間頁面
-      roomPage: () => gameDate.setPage("/", router),
-      // printName: () => gameDate.printName(),
-    };
-  },
-});
-</script>
 
 <style scoped>
 /* 最底的底色 */
@@ -61,30 +56,22 @@ export default defineComponent({
   min-width: 1200px;
   height: 100vh;
   /* 條紋背景 */
-  background: linear-gradient(
-    to right,
-    #fbeed1 0%,
-    #fbeed1 10%,
-    #f3c8af 10%,
-    #f3c8af 20%,
-    #fbeed1 20%,
-    #fbeed1 30%,
-    #f3c8af 30%,
-    #f3c8af 40%,
-    #fbeed1 40%,
-    #fbeed1 70%,
-    #f3c8af 70%,
-    #f3c8af 100%
-  );
+  background: linear-gradient(to right,
+      #fbeed1 0%,
+      #fbeed1 10%,
+      #f3c8af 10%,
+      #f3c8af 20%,
+      #fbeed1 20%,
+      #fbeed1 30%,
+      #f3c8af 30%,
+      #f3c8af 40%,
+      #fbeed1 40%,
+      #fbeed1 70%,
+      #f3c8af 70%,
+      #f3c8af 100%);
   background-size: 200px 100%;
 }
 
-.index-top-bar,
-.index-bottom-bar {
-  width: 100%;
-  height: 30px;
-  background: #362321;
-}
 
 .index-bottom-bar {
   border-top: 2px solid #1a1212;
@@ -110,7 +97,6 @@ export default defineComponent({
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  background: #f3c8af;
 }
 
 .display-area {
