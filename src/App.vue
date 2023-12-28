@@ -1,15 +1,15 @@
 <script setup lang="ts">
 // 該頁面只畫出主要的框架，還沒有實作功能
 import { useRouter } from "vue-router";
-import { useGameDate } from "@/stores/game_data";
+import { useGameData } from "@/stores/game_data";
 
-const gameDate = useGameDate();
+const gameData = useGameData();
 const router = useRouter();
 
 // 創建帳號頁面
-const logInAccount = () => gameDate.setPage("/logIn", router);
+const logInAccount = () => gameData.setPage("/logIn", router);
 // 房間頁面
-const roomPage = () => gameDate.setPage("/", router);
+const roomPage = () => gameData.setPage("/", router);
 
 </script>
 
@@ -37,7 +37,7 @@ const roomPage = () => gameDate.setPage("/", router);
       </div>
     </div>
     <div>
-      {{ gameDate.page }}
+      {{ gameData.page }}
       <button @click="logInAccount">Change Name</button>
       <button @click="roomPage">Print Name</button>
     </div>

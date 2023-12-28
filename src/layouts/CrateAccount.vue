@@ -27,7 +27,7 @@
     </div>
     <!-- 紙娃娃 -->
     <div class="crate-account-doll-area">
-      <DollSystem :styleInit="dollSystemInit" />
+      <!-- <DollSystem :styleInit="dollSystemInit" /> -->
     </div>
   </div>
 </template>
@@ -35,9 +35,9 @@
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
-import DollSystem from "@/components/DollSystem.vue";
+// import DollSystem from "@/components/DollSystem.vue";
 import "../assets/css/tailwind.css";
-import { useGameDate } from "@/stores/game_data";
+import { useGameData } from "@/stores/game_data";
 
 interface Option {
   label: string;
@@ -47,7 +47,7 @@ interface Option {
 export default defineComponent({
   name: "CrateAccount",
   components: {
-    DollSystem,
+    // DollSystem,
   },
   setup() {
     // 語系選擇options
@@ -63,23 +63,23 @@ export default defineComponent({
     // 語系選擇
     const crateLanguage = ref("");
     // 路由
-    const gameDate = useGameDate();
+    const gameData = useGameData();
     const router = useRouter();
     // 紙娃娃樣式是否初始化
     const dollSystemInit = ref(true);
-    console.log("gameDate", gameDate.page);
+    console.log("gameData", gameData.page);
 
     // 註冊帳號確認鈕
     // 必須判定是否註冊成功
     // 傳導至首頁並為登入狀態
     const cratedAccount = () => {
-      gameDate.setPage("/", router);
+      gameData.setPage("/", router);
     };
 
     onMounted(() => {
       // 紙娃娃樣式是否初始化
       // 用store值做判斷
-      if (gameDate.page === "/crateAccount") {
+      if (gameData.page === "/crateAccount") {
         dollSystemInit.value = true;
       } else {
         dollSystemInit.value = false;

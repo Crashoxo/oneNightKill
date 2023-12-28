@@ -1,30 +1,31 @@
 import axios from 'axios';
 
-// 创建axios
+// 創建axios
 const service = axios.create({
     // baseURL: '/api',
     baseURL: 'https://vue3-course-api.hexschool.io/',
     timeout: 80000
 });
 
-// 添加请求拦截器
+// 添加 請求攔截器
 service.interceptors.request.use(
     (config: any) => {
-        let token: string = 'token'//此处换成自己获取回来的token，通常存在在cookie或者store里面
+        // 抓cookie的value
+        let token: string = document.cookie //此處换成自己拿到的token，通常存在在cookie或store里面
 
         if (token) {
-            // 如果 config.headers 不存在，初始化为一个空对象
+            // 如果 config.headers 不存在，初始化為空物件
             config.headers = config.headers || {};
 
-            // 让每个请求携带token-- ['X-Token']为自定义key 请根据实际情况自行修改
-            config.headers['X-Token'] = token;
+            // 視需要可自行加入token，此處將token加入到headers中
+            config.headers['hexToken'] = token;
             config.headers.Authorization = token;
         }
         return config
     },
     error => {
         // Do something with request error
-        console.log("出错啦", error) // for debug
+        console.log("出錯啦", error) // for debug
         Promise.reject(error)
     }
 )
@@ -36,12 +37,12 @@ service.interceptors.response.use(
     error => {
         console.log('err' + error) // for debug
         if (error.response.status == 403) {
-            // ElMessage.error('错了')
-            console.log('错了');
+            // ElMessage.error('錯了')
+            console.log('錯了');
 
         } else {
-            // ElMessage.error('服务器请求错误，请稍后再试')
-            console.log('服务器请求错误，请稍后再试');
+            // ElMessage.error('伺服器請求錯誤，請稍後再試')
+            console.log('伺服器請求錯誤，請稍後再試');
         }
         return Promise.reject(error)
     }

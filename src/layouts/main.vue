@@ -2,61 +2,81 @@
 // 登入畫面、紙娃娃、登入後畫面(不含room)
 import { computed, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
-import { useGameDate } from "@/stores/game_data";
+import { useGameData } from "@/stores/game_data";
 import { storeToRefs } from "pinia";
+// 使用語系
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
 
+import selectLanguageOption from '@/components/selectLanguageOption.vue';
+import DollSystem from '@/components/Doll/DollSystem.vue';
 
-interface Option {
-  label: string;
-  value: string;
-}
+// interface Option {
+//   label: string;
+//   value: string;
+// }
 
-const languageOptions: Option[] = [
-  { label: "繁體中文", value: "language_tw" },
-  { label: "English", value: "language_en" },
-  { label: "簡體中文", value: "language_cn" },
-];
+// // const languageOptions: Option[] = [
+// //   { label: "繁體中文", value: "language_tw" },
+// //   { label: "English", value: "language_en" },
+// //   { label: "簡體中文", value: "language_cn" },
+// // ];
 
-// 取得使用者keyin的帳號密碼
-//
+// 取得使用者key的帳號密碼
 let userAccount = ref("littlegirlrou@yahoo.com.tw");
 let userPassword = ref("irisiris");
-let selectLanguage = ref("language_tw");
+
+// todo: 抓store的語系
+let selectLanguage = ref("zh-tw");
+
 
 // 推Router
-const gameDate = useGameDate();
+const gameData = useGameData();
 const router = useRouter();
-const crateAccount = () => gameDate.setPage("/crateAccount", router);
+const crateAccount = () => gameData.setPage("/crateAccount", router);
 
-const { getProfile } = storeToRefs(gameDate);
+// 取得使用者資料 Getter
+// const { getProfile } = storeToRefs(gameData);
 
-// const curLang = computed(() => gameDate.getProfile().language);
+// token 檢查是否已登入
+const userToken = computed(() => gameData.getProfile.token);
 
 // 登入、快速登入
 // 沒有資料或DB沒資料，視為快速登入
 function logIn(): void {
-    // 快速登入資料，控在版面上
-    const userFastPass = {
-      name: userAccount.value,
-      language: selectLanguage,
-      body: "F",
-      head: "01",
-      hat: "01",
-    };
+  // 快速登入資料，控在版面上
+  const userFastPass = {
+    name: userAccount.value,
+    language: selectLanguage,
+    body: "F",
+    head: "01",
+    hat: "01",
+    token: "tempToken",
+  };
 
-    // API需要傳入的資料
-    const userAccountData = {
-        username: userAccount.value,
-        password: userPassword.value,
-    };
+  // API需要傳入的資料
+  const userAccountData = {
+    username: userAccount.value,
+    password: userPassword.value,
+  };
 
-    // 登入
-    gameDate.setProfile(userFastPass, userAccountData);
+  // 登入
+  gameData.setProfile(userFastPass, userAccountData);
 
-    console.log("getProfile", gameDate.page);
-    console.log("getProfile", gameDate.name);
+  console.log("getProfile", gameData.page);
+  console.log("getProfile", gameData.name);
+  console.log("getProfile", gameData.language);
 }
 
+// 登出
+function logout(): void {
+    gameData.setLogOut();
+}
+
+// 收子層的語系，並暫存在該頁面(尚未存入store)
+const receivedChildLanguage = (value: string) => {
+  selectLanguage.value = value;
+}
 
 onMounted(() => {
   console.log("mounted");
@@ -64,36 +84,47 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="login-and-doll ">
-    <!-- 登入畫面 -->
-    <div class="login-area">
+  <div class="login-and-doll">
+    <!-- 登入後顯示 -->
+    <div v-if="userToken" class="login-area">
       <!-- 帳號 -->
+      <p>{{ gameData.name }}</p>
+      <p>{{ gameData.language }}</p>
+      <p>{{ gameData.page }}</p>
+      <!-- 語系選擇 -->
+      <SelectLanguageOption @child-set-language="receivedChildLanguage"/>
+      <div class="log-in-and-crate-account flex flex-row m-2">
+        <button class="main-btn" @click="">進入房間</button>
+        <button class="main-btn" @click="logout">登出</button>
+      </div>
+    </div>
+    <!-- 登入前畫面 -->
+    <div v-else class="login-area">
+      <!-- 帳號 -->
+      <br>
+      {{ t('S_COMMON_ES_TIME') }}
       <div class="account-area">
         <div class="account-icon"></div>
-        <input type="text" v-model="userAccount" required/>
+        <input type="text" v-model="userAccount" required />
       </div>
       <div class="account-area">
         <div class="password-icon"></div>
         <input type="text" v-model="userPassword" />
       </div>
       <!-- 語系選擇 -->
-      <select v-model="selectLanguage">
-        <option value="">Please select</option>
-        <option v-for="language in languageOptions" :key="language.value" :value="language.value">
-          {{ language.label }}
-        </option>
-      </select>
+      <selectLanguageOption @child-set-language="receivedChildLanguage"/>
       <div>Selected value: {{ selectLanguage }}</div>
       <div>{{ userAccount }} {{ userPassword }}</div>
       <div class="log-in-and-crate-account flex flex-row">
-        <button class="main-btn " @click="logIn">登入/快速登入</button>
+        <button class="main-btn" @click="logIn">{{ $t('S_LOGIN') }}</button>
         <button class="main-btn" @click="crateAccount">註冊帳號</button>
       </div>
-
     </div>
+
+    <!-- 紙娃娃 -->
     <div class="doll-area">
-      <!-- 紙娃娃 -->
-      {{ gameDate.name }}
+      <DollSystem/>
+
       <!-- element -->
       <!-- <el-button>Default</el-button>
     <el-button type="primary">Primary</el-button>
@@ -112,7 +143,6 @@ $mind-bg-color: #f5f5f5;
 .login-and-doll {
   display: flex;
   flex-direction: row;
-  justify-content: center;
   align-items: center;
   width: 100%;
   height: 100%;
@@ -171,14 +201,17 @@ $mind-bg-color: #f5f5f5;
   line-height: 1.5rem;
   outline: 0.125rem solid transparent;
   padding: 0.5rem 1.5rem;
+  margin-right: 0.5rem;
   text-align: center;
   transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: -0.375rem 0.5rem 0.625rem rgba(81, 41, 10, 0.1), 0rem 0.125rem 0.125rem rgba(81, 41, 10, 0.2);
+  box-shadow: -0.375rem 0.5rem 0.625rem rgba(81, 41, 10, 0.1),
+    0rem 0.125rem 0.125rem rgba(81, 41, 10, 0.2);
 }
 
 .main-btn:active {
   background-color: #f3f4f6;
-  box-shadow: -1px 2px 5px rgba(81, 41, 10, 0.15), 0px 1px 1px rgba(81, 41, 10, 0.15);
+  box-shadow: -1px 2px 5px rgba(81, 41, 10, 0.15),
+    0px 1px 1px rgba(81, 41, 10, 0.15);
   transform: translateY(0.125rem);
 }
 </style>

@@ -7,10 +7,15 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
-    DollSystem: typeof import('./src/components/DollSystem.vue')['default']
+    Doll: typeof import('./src/components/Doll.vue')['default']
+    DollSystem: typeof import('./src/components/Doll/DollSystem.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     OctopusTakoyaki: typeof import('./src/components/OctopusTakoyaki.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    SelectAppearance: typeof import('./src/components/Doll/SelectAppearance.vue')['default']
+    SelectApproance: typeof import('./src/components/Doll/SelectApproance.vue')['default']
+    SelectLanguageOption: typeof import('./src/components/SelectLanguageOption.vue')['default']
+    SelectOption: typeof import('./src/components/selectOption.vue')['default']
   }
 }
