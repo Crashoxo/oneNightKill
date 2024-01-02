@@ -1,6 +1,6 @@
 export default {
     S_USE_ENTRY_TO_LOGIN: '使用 {entry} 登入',
-    S_LOGIN: '登入',
+    S_LOGIN: '简体',
     S_ACCOUNT: '帐号',
     S_PASSWORD: '密码',
 

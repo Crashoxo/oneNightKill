@@ -59,11 +59,10 @@ export const useGameData = defineStore("gameData", {
             console.log("抓API會員資料");
             try {
                 const response = await apiUserLogIn(userAccountData);
-                console.log("结果", response);
+                console.log("登入结果", response);
 
                 // 寫入cookie
                 const { token, expired } = response; //token、expired = data內的token、expired
-                console.log(token, expired);
                 document.cookie = `hexToken=${token}; expired=${new Date(expired)}`;
 
                 // 從cookie hexToken拿出token
@@ -71,7 +70,7 @@ export const useGameData = defineStore("gameData", {
                     /(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/,
                     "$1"
                 );
-                console.log(pickCookieToken);
+                console.log("Token", pickCookieToken);
                 
                 // 後端API要做一個判斷，如果沒有此帳號，就回傳success就回傳false
                 // EX:
@@ -82,7 +81,7 @@ export const useGameData = defineStore("gameData", {
                     //todo: 取得後端資料就不用假資料了，該段刪除
                     const userTempData = {
                         name: "Crash",
-                        language: "zh-en", // 改!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                        language: "zh-en",
                         body: "bodyM",
                         hair: "hair05",
                         hat: "hat02",
@@ -100,6 +99,8 @@ export const useGameData = defineStore("gameData", {
                 } else {
                     console.log("查無此帳號！視為快速登入");
                     const { name, language, body, hair, hat, token } = profile;
+                    console.log("???,", name, language, body, hair, hat, token);
+                    
                     this.name = name;
                     this.language = language;
                     this.body = body;
@@ -116,7 +117,7 @@ export const useGameData = defineStore("gameData", {
             console.log("抓API會員資料");
             try {
                 const response = await apiUserLogOut({ token: this.token });
-                console.log("结果", response);
+                console.log("登出结果", response);
                 // 後端API要做一個判斷，如果失敗回應，就回傳success就回傳false
                 // EX:
                 // {
@@ -142,6 +143,13 @@ export const useGameData = defineStore("gameData", {
             } catch (error) {
                 console.log("API讀取失敗！", error);
             }
+        },
+        // 註冊帳號 寫入資料庫 + 寫入store
+        setRegisterData(crateUserProfile: Object): void {
+            // todo註冊成功
+            console.log("註冊帳號", crateUserProfile);
+            // todo註冊失敗
+            // todoAPI失敗
         },
         // 設定doll資料
         setDoll(DollItem: { body: string, hair: string, hat: string }) {

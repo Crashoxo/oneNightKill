@@ -69,42 +69,7 @@ export const dollCategory: Option1[] = [
     label: "頭髮",
     dollCategoryId: "11",
     text_key: "S_LOGIN",
-  },
-  {
-    label: "帽子",
-    dollCategoryId: "12",
-    text_key: "S_LOGIN",
-  },
-  {
-    label: "身體",
-    dollCategoryId: "13",
-    text_key: "S_LOGIN",
-  },
-  {
-    label: "頭髮",
-    dollCategoryId: "20",
-    text_key: "S_LOGIN",
-  },
-  {
-    label: "帽子",
-    dollCategoryId: "14",
-    text_key: "S_LOGIN",
-  },
-  {
-    label: "身體",
-    dollCategoryId: "15",
-    text_key: "S_LOGIN",
-  },
-  {
-    label: "頭髮",
-    dollCategoryId: "16",
-    text_key: "S_LOGIN",
-  },
-  {
-    label: "帽子",
-    dollCategoryId: "17",
-    text_key: "S_LOGIN",
-  },
+  }
 ];
 
 // 人偶項目

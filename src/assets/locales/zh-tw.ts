@@ -1,7 +1,7 @@
 export default {
     S_AAAA: 'AAAA',
     S_USE_ENTRY_TO_LOGIN: '使用 {entry} 登入',
-    S_LOGIN: '登入',
+    S_LOGIN: '繁體',
     S_ACCOUNT: '帳號',
     S_PASSWORD: '密碼',
     S_LOGOUT: '登出',

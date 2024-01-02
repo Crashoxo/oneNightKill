@@ -11,12 +11,11 @@ import SelectLanguageOption from "@/components/SelectLanguageOption.vue";
 import DollSystem from "@/components/Doll/DollSystem.vue";
 import ShowDoll from "@/components/Doll/ShowDoll.vue";
 
+// 註冊帳號名稱用
+let crateName = ref("");
 // 取得使用者key的帳號密碼
 let userAccount = ref("littlegirlrou@yahoo.com.tw");
 let userPassword = ref("irisiris");
-
-// todo: 抓store的語系
-let selectLanguage = ref("zh-tw");
 
 // 推Router
 const gameData = useGameData();
@@ -26,24 +25,24 @@ const router = useRouter();
 // token 檢查是否已登入
 const userToken = computed(() => gameData.getProfile.token);
 
-// 收子層的語系，並暫存在該頁面(尚未存入store)
-const receivedChildLanguage = (value: string) => {
-    selectLanguage.value = value;
-};
+// 如果gameData.Profile改變，預設改變
+const userProfile = computed(() => gameData.getProfile);
 
 // 是否註冊中
-const userRegistering = ref(false)
+const userRegistering = ref(false);
 
 // 登入、快速登入
 // 沒有資料或DB沒資料，視為快速登入
 function logIn(): void {
+    const { language, body, hair, hat } = userProfile.value;
     // 快速登入資料，控在版面上
+    // 正常登入控在API的DB
     const userFastPass = {
         name: userAccount.value,
-        language: selectLanguage,
-        body: "bodyF",
-        hair: "hair01",
-        hat: "",
+        language: language, // selectLanguage.value寫入store
+        body: body, // dollCategoryId.value寫入store
+        hair: hair, // dollCategoryId.value寫入store
+        hat: hat, // dollCategoryId.value寫入store
         token: "tempToken",
     };
 
@@ -55,10 +54,6 @@ function logIn(): void {
 
     // 登入
     gameData.setProfile(userFastPass, userAccountData);
-
-    console.log("getProfile", gameData.page);
-    console.log("getProfile", gameData.name);
-    console.log("getProfile", gameData.language);
 }
 
 // 登出
@@ -66,51 +61,76 @@ function logout(): void {
     gameData.setLogOut();
 }
 
-// 登出
-function crateAccount(): void {
-    userRegistering.value = true
+// 註冊帳號
+function registeredAccount(): void {
+    // 註冊資料
+    const registerAccount = {
+        name: crateName.value,
+        username: userAccount.value,
+        password: userPassword.value,
+    };
+
+    // 打API
+    gameData.setRegisterData(registerAccount);
+
+    // 退出註冊
+    // API成功才轉跳，並且直接登入
+    userRegistering.value = false;
 }
 
-
-onMounted(() => {
-});
+onMounted(() => {});
 </script>
 
 <template>
     <div class="login-and-doll-system">
         <div class="login-and-user-doll">
-            <ShowDoll />
             <!-- 登入後顯示 -->
             <div
                 v-if="userToken"
-                class="login-area w-full h-full flex flex-col justify-unset items-center"
+                class="login-area w-full h-5/6 flex flex-col justify-unset items-center"
             >
-                <!-- 帳號 -->
+                <ShowDoll />
                 <p>{{ gameData.name }}</p>
-                <p>{{ gameData.language }}</p>
-                <p>{{ gameData.page }}</p>
-                <!-- 語系選擇 -->
-                <SelectLanguageOption
-                    @child-set-language="receivedChildLanguage"
-                />
+                <SelectLanguageOption class="m-1"/>
                 <div class="log-in-and-crate-account flex flex-row m-2">
-                    <button class="main-btn" @click="">進入房間</button>
+                    <button class="main-btn" @click="">
+                        {{ $t("S_LOGIN") }}進入房間
+                    </button>
                     <button class="main-btn" @click="logout">登出</button>
                 </div>
             </div>
-            <div 
+            <!-- 註冊畫面 -->
+            <div
                 v-else-if="userRegistering"
-                class="login-area w-full h-full flex flex-col justify-unset items-center"
+                class="login-area w-full h-5/6 flex flex-col justify-unset items-center"
             >
-                Hihi
+                <ShowDoll />
+                <div class="account-area">
+                    <div class="account-icon"></div>
+                    <input type="text" v-model="crateName" />
+                </div>
+                <div class="account-area">
+                    <div class="account-icon"></div>
+                    <input type="text" v-model="userAccount" required />
+                </div>
+                <div class="account-area">
+                    <div class="password-icon"></div>
+                    <input type="text" v-model="userPassword" required />
+                </div>
+                <SelectLanguageOption class="m-1"/>
+                <div class="log-in-and-crate-account flex flex-row m-2">
+                    <button class="main-btn" @click="registeredAccount">
+                        註冊
+                    </button>
+                </div>
             </div>
             <!-- 登入前畫面 -->
             <div
                 v-else
-                class="login-area w-full h-full flex flex-col justify-unset items-center"
+                class="login-area w-full h-5/6 flex flex-col justify-unset items-center"
             >
-                <!-- 帳號 -->
                 <!-- {{ t('S_COMMON_ES_TIME') }} -->
+                <ShowDoll />
                 <div class="account-area">
                     <div class="account-icon"></div>
                     <input type="text" v-model="userAccount" required />
@@ -119,16 +139,13 @@ onMounted(() => {
                     <div class="password-icon"></div>
                     <input type="text" v-model="userPassword" />
                 </div>
-                <!-- 語系選擇 -->
-                <SelectLanguageOption
-                    @child-set-language="receivedChildLanguage"
-                />
-                <div class="log-in-and-crate-account flex flex-row m-2">
+                <SelectLanguageOption class="m-2"/>
+                <div class="log-in-and-crate-account flex flex-row m-1">
                     <button class="main-btn" @click="logIn">
-                        {{ $t("S_LOGIN") }}
+                        {{ $t("S_LOGIN") }} 登入/快速登入
                     </button>
-                    <button class="main-btn" @click="crateAccount">
-                        註冊
+                    <button class="main-btn" @click="userRegistering = true">
+                        註冊帳號
                     </button>
                 </div>
             </div>
@@ -198,6 +215,7 @@ $mind-bg-color: #f5f5f5;
     align-items: center;
     width: 12rem;
     height: 1.8rem;
+    margin: 0.1rem;
 }
 
 // 按鈕

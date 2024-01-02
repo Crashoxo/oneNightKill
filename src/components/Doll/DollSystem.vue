@@ -7,16 +7,16 @@ import { ItemType } from "@/types";
 // 紙娃娃設定檔
 import { dollItems } from "@/config/doll";
 import SelectAppearance from "@/components/Doll/SelectAppearance.vue";
-
-// 把娃娃存資料進store
 import { useGameData } from "@/stores/game_data";
 const gameData = useGameData();
+
+// 取得使用者的doll資料
+const userProfile = computed(() => gameData.getProfile);
 
 // 傳值給子層，子層更新後回傳給父層
 // 給子層
 let dollCategoryId: Ref<string> = ref("1"); // 預設值
 function getDollCategoryId(getDollCategoryId: string) {
-    console.log("getDollCategoryId dollCategoryId", getDollCategoryId);
     // 從子元件傳進來
     dollCategoryId.value = getDollCategoryId;
 }
@@ -47,12 +47,16 @@ const changeAppearanceItemList = computed(() => {
 });
 
 // 暫存紙娃娃樣式
-let tempDoll: Ref<{ body: string; hair: string; hat: string }> = ref({
-    body: "bodyF",
-    hair: "hair01",
-    hat: "",
+const tempDoll = computed(() => {
+    const { body, hair, hat } = userProfile.value;
+    return  {
+        body: body || "bodyF",
+        hair: hair || "hair01",
+        hat: hat || "",
+    };
 });
 
+// 點擊服裝類型，變換紙娃娃
 function changeAppearanceItem(dollItem: Object) {
     const config = {
         "1": "body",
@@ -74,12 +78,12 @@ function changeAppearanceItem(dollItem: Object) {
             break;
         }
         default:
-            // 更新 tempDoll 的相应属性
+            // 更新 tempDoll 的值
             tempDoll.value[property] = dollItem.doll_url;
             break;
     }
 
-    // 存入store
+    // 把娃娃資料存進store
     gameData.setDoll(tempDoll.value);
 }
 
