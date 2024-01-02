@@ -7,7 +7,7 @@ interface gameDataState {
     name: string;
     language: string;
     body: string;
-    head: string;
+    hair: string;
     hat: string;
     token: string;
 }
@@ -17,7 +17,7 @@ interface userProfile {
     name: string;
     language: string;
     body: string;
-    head: string;
+    hair: string;
     hat: string;
     token: string;
 }
@@ -29,20 +29,22 @@ export const useGameData = defineStore("gameData", {
         //  預設帳號資料
         name: "123",
         language: "",
-        body: "",
-        head: "",
+        body: "bodyF",
+        hair: "hair01",
         hat: "",
         // token
         token: "",
     }),
 
     getters: {
+        // 取得頁面
         getPage(): string {
             return this.page;
         },
+        // 取得doll資料
         getProfile(): object {
-            const { name, language, body, head, hat, token } = this;
-            return { name, language, body, head, hat, token };
+            const { name, language, body, hair, hat, token } = this;
+            return { name, language, body, hair, hat, token };
         },
     },
 
@@ -80,28 +82,28 @@ export const useGameData = defineStore("gameData", {
                     //todo: 取得後端資料就不用假資料了，該段刪除
                     const userTempData = {
                         name: "Crash",
-                        language: "zh-en",
-                        body: "F",
-                        head: "01",
-                        hat: "01",
+                        language: "zh-en", // 改!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                        body: "bodyM",
+                        hair: "hair05",
+                        hat: "hat02",
                         token: pickCookieToken,
                     };
-                    const { name, language, body, head, hat, token } = userTempData;
+                    const { name, language, body, hair, hat, token } = userTempData;
                     // this.name = response.name;
                     this.name = name;
                     this.language = language;
                     this.body = body;
-                    this.head = head;
+                    this.hair = hair;
                     this.hat = hat;
                     this.token = token;
                     
                 } else {
                     console.log("查無此帳號！視為快速登入");
-                    const { name, language, body, head, hat, token } = profile;
+                    const { name, language, body, hair, hat, token } = profile;
                     this.name = name;
                     this.language = language;
                     this.body = body;
-                    this.head = head;
+                    this.hair = hair;
                     this.hat = hat;
                     this.token = token;
                 }
@@ -124,22 +126,32 @@ export const useGameData = defineStore("gameData", {
                 if (response.success) {
                     this.name = '';
                     this.language = '';
-                    this.body = '';
-                    this.head = '';
+                    this.body = 'bodyF';
+                    this.hair = 'hair01';
                     this.hat = '';
                     this.token = '';
                 } else {
                     console.log("已登出狀況,請重新登入");
                     this.name = '';
                     this.language = '';
-                    this.body = '';
-                    this.head = '';
+                    this.body = 'bodyF';
+                    this.hair = 'hair01';
                     this.hat = '';
                     this.token = '';
                 }
             } catch (error) {
                 console.log("API讀取失敗！", error);
             }
+        },
+        // 設定doll資料
+        setDoll(DollItem: { body: string, hair: string, hat: string }) {
+            this.body = DollItem.body;
+            this.hair = DollItem.hair;
+            this.hat = DollItem.hat;
+        },
+        // 設定語言
+        setLanguage(selectLanguage: string ) {
+            this.language = selectLanguage;
         },
     },
 });

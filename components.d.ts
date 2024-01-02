@@ -10,6 +10,7 @@ declare module 'vue' {
     Doll: typeof import('./src/components/Doll.vue')['default']
     DollSystem: typeof import('./src/components/Doll/DollSystem.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
+    FormDetail: typeof import('./src/components/FormDetail.vue')['default']
     OctopusTakoyaki: typeof import('./src/components/OctopusTakoyaki.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
@@ -17,5 +18,6 @@ declare module 'vue' {
     SelectApproance: typeof import('./src/components/Doll/SelectApproance.vue')['default']
     SelectLanguageOption: typeof import('./src/components/SelectLanguageOption.vue')['default']
     SelectOption: typeof import('./src/components/selectOption.vue')['default']
+    ShowDoll: typeof import('./src/components/Doll/ShowDoll.vue')['default']
   }
 }

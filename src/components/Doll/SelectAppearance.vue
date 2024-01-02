@@ -1,97 +1,65 @@
-<!-- <script setup lang="ts">
-import { computed, ref } from 'vue'
-
-// 傳給父層
-const emit = defineEmits(['child-set-select-appearance'])
-emit('child-set-select-appearance', '005')
-
-// 收取父層
-const props = defineProps<{
-  // 性別 衣服 頭髮 帽子
-  appearanceCategory: String
-}>();
-
-const tableOrderBy = computed(() => props.appearanceCategory);
-</script>
-
-
-<template>
-  <h1>{{ tableOrderBy }}</h1>
-</template>
-
-<style lang="scss" scoped>
-
-
-</style> -->
+<!--  人偶類型選單 -->
 <script setup lang="ts">
-import { ref, computed, defineEmits, defineProps } from 'vue'
+import { defineEmits, defineProps, onMounted } from 'vue'
 // 紙娃娃設定檔
-import { dollCategory } from "@/config/dollCategory";
+import { dollCategory } from "@/config/doll";
 
 // 傳給父層
 const emit = defineEmits(['child-set-select-appearance'])
 
 // 收取父層
-const props = defineProps<{
-  curSport: {
-    type: String,
-    default: String,
-  },
-}>();
+type Props = {
+      curAppearance: String
+};
+const props = withDefaults(defineProps<Props>(), {
+      curAppearance: () => '2'
+});
 
-// 球種列表資料
-// const navbarList = computed(() => {
-//   let sportArr = props.sportList;
-//   console.log("navbarList",);
-  
-//   return sportArr;
-// });
-
-// 切換球種，並且emit出去
-function changeCurSport(sportId: string) {
-  emit('child-set-select-appearance', sportId);
+// 切換類型，並且emit出去
+function changeDollCategory(dollCategoryId: string) {
+  emit('child-set-select-appearance', dollCategoryId);
 }
 
 // 一個sport item的class set
-function dollCategoryOptionClassSet(sportId: string) {
+function dollCategoryOptionClassSet(dollCategoryId: string) {
   return [
     "option-wrap",
     {
-      "is-active": `${sportId}` === `${props.curSport}`,
+      "is-active": `${dollCategoryId}` === `${props.curAppearance}`,
     },
   ];
 }
+
+onMounted(() => {
+});
+
 </script>
 
 <template>
-  <!-- 使用到 設定檔、Scss設定檔、i18n、Icon -->
-    <div class="sports-list-field">
-    <div
-      v-for="dollItem in dollCategory"
-      :key="dollItem.sportId"
-      :ref="`option-${dollItem.sportId}`"
-      :class="dollCategoryOptionClassSet(dollItem.sportId)"
-      @click="changeCurSport(dollItem.sportId)"
-    >
-      {{ dollItem.sportId }}
-      <div class="option-icon" :class="`sport-${dollItem.sportId}`" />
-
-      <div class="option-name">
-        {{ $t(dollItem.name) }}
-      </div>
+    <div class="doll-category-list-field">
+        <div
+          v-for="dollCategoryItem in dollCategory"
+          :key="dollCategoryItem.dollCategoryId"
+          :ref="`option-${dollCategoryItem.dollCategoryId}`"
+          :class="dollCategoryOptionClassSet(dollCategoryItem.dollCategoryId)"
+          @click="changeDollCategory(dollCategoryItem.dollCategoryId)"
+        >
+                  {{ dollCategoryItem.dollCategoryId }}
+              <div class="option-icon" :class="`doll-category-${dollCategoryItem.dollCategoryId}`"/>
+              <div class="option-name">
+                  {{ $t(dollCategoryItem.text_key) }}
+              </div>
+        </div>
     </div>
-  </div>
-
 </template>
 
 <style lang="scss" scoped>
-// 球種網址物件
-$sportUrl: (
-  1: "house-solid",
-  2: "ghost-solid",
-  3: "heart-solid",
-  4: "music-solid",
-  5: "star-solid",
+// 圖片路徑檔名
+// $id, $iconName
+$dollCategoryUrl: (
+  '1': "body",
+  '2': "hair",
+  '3': "hat",
 );
 
 @mixin iconMask($maskUrl) {
@@ -100,22 +68,23 @@ $sportUrl: (
   mask-image: url($maskUrl);
 }
 
-// each 建立球種 class
-@each $name, $iconName in $sportUrl {
-  .sport-#{$name} {
-    @include iconMask("/static/images/" + $iconName + ".svg");
+// 建立icon class
+@each $id, $iconName in $dollCategoryUrl {
+  .doll-category-#{$id} {
+    @include iconMask("@/assets/icon/dollCategory/" + $iconName + ".svg");
   }
 }
 
-.sports-list-field {
-  position: relative;
+
+.doll-category-list-field {
+  position: relative; // 給子層黏著
   display: flex;
   align-items: center;
   max-width: 100%;
   width: 100%;
   // height: 4.53rem;
   background: #000;
-  overflow-x: auto;
+  overflow-x: auto;  // 設定橫向拉霸
 }
 
 .option-wrap {
@@ -128,13 +97,15 @@ $sportUrl: (
   font-weight: 700;
   color: #727272;
 
+
   &.is-active {
+    // 黏在最上面
     position: sticky;
     left: 0;
     right: 0;
     background: #000;
     color: #fff;
-    z-index: 2;
+    z-index: 1;
     > .option-icon {
       background-color: #fff;
     }
@@ -152,10 +123,5 @@ $sportUrl: (
 .option-name {
   text-align: center;
   width: max-content;
-}
-
-.flex-icon-sport-id {
-  display: flex;
-  align-items: center;
 }
 </style>

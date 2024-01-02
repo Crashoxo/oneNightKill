@@ -1,88 +1,139 @@
-<!-- <script setup lang="ts">
-// 登入畫面、紙娃娃、登入後畫面(不含room)
-import SelectAppearance from '@/components/Doll/SelectAppearance.vue';
-import { Loading } from 'element-plus/es/components/loading/src/service';
-// 使用語系
-import { ref, computed } from 'vue'; // Add 'ref' to the import statement
+<!-- 1. 拿到分類，顯示對應的服裝類型 -->
+<!-- 2. 並且把點擊的服裝類型存到store，變換紙娃娃 -->
+<script setup lang="ts">
+// ref "值"會改變用
+import { ref, Ref, computed, onMounted } from "vue";
+import { ItemType } from "@/types";
+// 紙娃娃設定檔
+import { dollItems } from "@/config/doll";
+import SelectAppearance from "@/components/Doll/SelectAppearance.vue";
 
-// 收衣服的格式
-// let userDollCategory = computed(() => {
-//     if (route.name) {
-//         return route.name;
-//     }
-//     return '';
-// });
+// 把娃娃存資料進store
+import { useGameData } from "@/stores/game_data";
+const gameData = useGameData();
 
-let userDollCategory = ref("001");
-
+// 傳值給子層，子層更新後回傳給父層
 // 給子層
-const parentData = ref("001"); 
-
-// 收子層
-function changeCategory(value: string): void {
-    userDollCategory.value = value
-    console.log("userDollCategory",userDollCategory.value);
+let dollCategoryId: Ref<string> = ref("1"); // 預設值
+function getDollCategoryId(getDollCategoryId: string) {
+    console.log("getDollCategoryId dollCategoryId", getDollCategoryId);
+    // 從子元件傳進來
+    dollCategoryId.value = getDollCategoryId;
 }
 
+// 改變紙娃娃顯示樣式
+const changeAppearanceItemList = computed(() => {
+    // 顯示對應的服裝類型
+    return dollItems.filter((item: ItemType) => {
+        // 只顯示女生髮型
+        if (
+            tempDoll.value.body === "bodyF" &&
+            item.group === "2" &&
+            !item.isGirl
+        ) {
+            return false;
+        }
+
+        // 只顯示男生髮型
+        if (
+            tempDoll.value.body === "bodyM" &&
+            item.group === "2" &&
+            item.isGirl
+        ) {
+            return false;
+        }
+        return item.group === dollCategoryId.value;
+    });
+});
+
+// 暫存紙娃娃樣式
+let tempDoll: Ref<{ body: string; hair: string; hat: string }> = ref({
+    body: "bodyF",
+    hair: "hair01",
+    hat: "",
+});
+
+function changeAppearanceItem(dollItem: Object) {
+    const config = {
+        "1": "body",
+        "2": "hair",
+        "3": "hat",
+    };
+
+    // 使用 dollItem.group 获取相应的属性名
+    const property = config[dollItem.group];
+    switch (dollItem.dollItemsId) {
+        case "001-1": {
+            tempDoll.value.body = "bodyM";
+            tempDoll.value.hair = "hair04";
+            break;
+        }
+        case "001-2": {
+            tempDoll.value.body = "bodyF";
+            tempDoll.value.hair = "hair01";
+            break;
+        }
+        default:
+            // 更新 tempDoll 的相应属性
+            tempDoll.value[property] = dollItem.doll_url;
+            break;
+    }
+
+    // 存入store
+    gameData.setDoll(tempDoll.value);
+}
+
+onMounted(() => {});
 </script>
 
 <template>
-    <div>
-      <div class="doll-img"></div>
-      <SelectAppearance 
-          :appearance-category="parentData" 
-          @child-set-select-appearance="changeCategory"
-      />
+    <div
+        class="doll-system h-5/6 w-full flex flex-col justify-evenly items-center"
+    >
+        <!-- 樣式顯示 -->
+        <div class="doll-item-area">
+            <div
+                v-for="dollItem in changeAppearanceItemList"
+                class="doll-item-wrap"
+                :key="dollItem.dollItemsId"
+                @click="changeAppearanceItem(dollItem)"
+            >
+                <img
+                    class="cursor-pointer"
+                    :src="`src/assets/image/doll/${dollItem.doll_url}.png`"
+                    alt=""
+                />
+            </div>
+        </div>
+        <!-- 分類選單 -->
+        <div class="select-appearance">
+            <SelectAppearance
+                class="compare-sport-icon"
+                :cur-appearance="dollCategoryId"
+                @childSetSelectAppearance="getDollCategoryId"
+            />
+            <!-- {{ dollCategoryId }}  -->
+        </div>
     </div>
-    <span class="text-area">{{ userDollCategory }} 可以拿來抓資料顯示</span>
 </template>
 
 <style lang="scss" scoped>
-.doll-img {
-  width: 230px;
-  height: 230px;
-  background-image: url("@/image/doll/body/charsim.png");
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  background-color: #dc603d;
+.doll-item-area {
+    flex: 1; // 直接站滿剩下的空間
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 80%;
 }
 
-</style>
- -->
-
- <template>
-  <div class="select-appearance">
-    <SelectAppearance
-      class="compare-sport-icon"
-      :cur-sport="sportId"
-      @childSetSelectAppearance="getSportId"
-    />
-    <span class="text-area">{{ sportId }} 可以拿來抓資料顯示</span>
-  </div>
-</template>
-
-<script setup lang="ts">
-// @ is an alias to /src
-import SelectAppearance from "@/components/Doll/SelectAppearance.vue";
-import { ref, Ref } from 'vue';
-
-
-let sportId: Ref<string> = ref("1");
-
-function getSportId(getSportId: string) {
-  console.log("getSportId sportId", getSportId);
-  // 從子元件傳進來
-  sportId.value = getSportId;
-}
-</script>
-
-<style lang="scss" scoped>
-.text-area {
-  font-size: 24px;
-  color: brown;
+.select-appearance {
+    flex: none;
+    width: 30rem;
 }
 
-.select-appearance{
-  width: 500px;
+.doll-item-wrap {
+    padding: 0.5rem;
 }
 </style>

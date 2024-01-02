@@ -1,5 +1,11 @@
 {
     "cSpell.words": [
         "Chuan"
-    ]
+    ],
+    "editor.tabSize": 4,
+    "vetur.format.defaultFormatterOptions": {
+        "prettier": {
+            "tabWidth": 4
+        }
+    }
 }
