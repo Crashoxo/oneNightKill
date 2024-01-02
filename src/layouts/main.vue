@@ -20,7 +20,6 @@ let userPassword = ref("irisiris");
 // 推Router
 const gameData = useGameData();
 const router = useRouter();
-// const crateAccount = () => gameData.setPage("/crateAccount", router);
 
 // token 檢查是否已登入
 const userToken = computed(() => gameData.getProfile.token);
@@ -30,6 +29,23 @@ const userProfile = computed(() => gameData.getProfile);
 
 // 是否註冊中
 const userRegistering = ref(false);
+
+// 註冊帳號
+function registeredAccount(): void {
+    // 註冊資料
+    const registerAccount = {
+        name: crateName.value,
+        username: userAccount.value,
+        password: userPassword.value,
+    };
+
+    // 打API
+    gameData.setRegisterData(registerAccount);
+
+    // 退出註冊
+    // API成功才轉跳，並且直接登入
+    userRegistering.value = false;
+}
 
 // 登入、快速登入
 // 沒有資料或DB沒資料，視為快速登入
@@ -61,22 +77,16 @@ function logout(): void {
     gameData.setLogOut();
 }
 
-// 註冊帳號
-function registeredAccount(): void {
-    // 註冊資料
-    const registerAccount = {
-        name: crateName.value,
-        username: userAccount.value,
-        password: userPassword.value,
-    };
-
-    // 打API
-    gameData.setRegisterData(registerAccount);
-
-    // 退出註冊
-    // API成功才轉跳，並且直接登入
-    userRegistering.value = false;
+// 進入房間列表
+function enterGameRoomsList():void { 
+    // 沒有token，不給進入   
+    if(userProfile.value.token === "") {
+        alert("請先登入");
+        return;
+    }
+    gameData.setPage("/gameRoomList", router)
 }
+
 
 onMounted(() => {});
 </script>
@@ -93,7 +103,7 @@ onMounted(() => {});
                 <p>{{ gameData.name }}</p>
                 <SelectLanguageOption class="m-1"/>
                 <div class="log-in-and-crate-account flex flex-row m-2">
-                    <button class="main-btn" @click="">
+                    <button class="main-btn" @click="enterGameRoomsList">
                         {{ $t("S_LOGIN") }}進入房間
                     </button>
                     <button class="main-btn" @click="logout">登出</button>

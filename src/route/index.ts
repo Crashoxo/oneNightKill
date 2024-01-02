@@ -1,7 +1,7 @@
 import { createWebHistory, createRouter, RouteRecordRaw } from "vue-router";
 
 import logInPage from '../layouts/Main.vue';
-import CrateAccount from '../layouts/CrateAccount.vue';
+import GameRoomList from '../layouts/GameRoomList.vue';
 
 const routes: Array<RouteRecordRaw> = [
     // 登入帳號 Main.vue
@@ -15,11 +15,11 @@ const routes: Array<RouteRecordRaw> = [
     },
     // 註冊帳號
     {
-        path: '/crateAccount',
-        name: 'crateAccount',
-        component: () => import('../layouts/CrateAccount.vue'),
+        path: '/gameRoomList',
+        name: 'gameRoomList',
+        component: () => import('../layouts/GameRoomList.vue'),
         meta:{
-            layout: CrateAccount
+            layout: GameRoomList
         }
     }
     // {
