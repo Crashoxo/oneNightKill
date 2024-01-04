@@ -7,6 +7,7 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    CrateRoom: typeof import('./src/components/CrateRoom.vue')['default']
     Doll: typeof import('./src/components/Doll.vue')['default']
     DollSystem: typeof import('./src/components/Doll/DollSystem.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']

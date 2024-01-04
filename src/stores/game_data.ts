@@ -55,52 +55,48 @@ export const useGameData = defineStore("gameData", {
             router.push(this.page);
         },
         // 登入
+        // spyToken寫入cookie
         async setProfile(profile: userProfile, userAccountData: Object) :Promise<void> {
-            console.log("抓API會員資料");
             try {
-                const response = await apiUserLogIn(userAccountData);
-                console.log("登入结果", response);
+                console.log("抓API會員資料", userAccountData);
+                const jsonResponse = await apiUserLogIn(userAccountData);
+                const userData = JSON.parse(JSON.stringify(jsonResponse));
+                // {
+                //     "name": "Crash",
+                //     "language": "zh-en",
+                //     "body": "bodyM",
+                //     "hair": "hair05",
+                //     "hat": "hat02",
+                //     "token": "1234567890",
+                //     "expired": "2021-01-01 00:00:00",
+                //     "success": true,
+                //     "message": "登入成功"
+                // }
 
                 // 寫入cookie
-                const { token, expired } = response; //token、expired = data內的token、expired
-                document.cookie = `hexToken=${token}; expired=${new Date(expired)}`;
+                const { name, language, body, hair, hat, token, expired } = userData; //token、expired = data內的token、expired
+                document.cookie = `spyToken=${token}; expired=${new Date(expired)}`;
 
-                // 從cookie hexToken拿出token
+                // 從cookie spyToken拿出token
                 const pickCookieToken = document.cookie.replace(
                     /(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/,
                     "$1"
                 );
                 console.log("Token", pickCookieToken);
-                
-                // 後端API要做一個判斷，如果沒有此帳號，就回傳success就回傳false
-                // EX:
-                // message: "登入失敗"
-                // success: false
-                // token: ""
-                if (response.success) {
-                    //todo: 取得後端資料就不用假資料了，該段刪除
-                    const userTempData = {
-                        name: "Crash",
-                        language: "zh-en",
-                        body: "bodyM",
-                        hair: "hair05",
-                        hat: "hat02",
-                        token: pickCookieToken,
-                    };
-                    const { name, language, body, hair, hat, token } = userTempData;
-                    // this.name = response.name;
+
+                if (userData.success) {
                     this.name = name;
                     this.language = language;
                     this.body = body;
                     this.hair = hair;
                     this.hat = hat;
-                    this.token = token;
+                    this.token = pickCookieToken;
                     
                 } else {
                     console.log("查無此帳號！視為快速登入");
                     const { name, language, body, hair, hat, token } = profile;
-                    console.log("???,", name, language, body, hair, hat, token);
-                    
+                    document.cookie = `spyToken=${token}`; // 寫入cookie
+                    console.log("快速登入Data", name, language, body, hair, hat, token);
                     this.name = name;
                     this.language = language;
                     this.body = body;
@@ -113,18 +109,16 @@ export const useGameData = defineStore("gameData", {
             }
         },
         // 登出
+        // spyToken清掉
         async setLogOut():Promise<void> {
             console.log("抓API會員資料");
             try {
-                const response = await apiUserLogOut({ token: this.token });
-                console.log("登出结果", response);
-                // 後端API要做一個判斷，如果失敗回應，就回傳success就回傳false
-                // EX:
-                // {
-                //     "success": true,
-                //     "message": "已登出"
-                //   }
-                if (response.success) {
+                const jsonResponse = await apiUserLogOut({ token: this.token });
+                const userData = JSON.parse(JSON.stringify(jsonResponse));
+                console.log("登出结果", userData);
+                document.cookie = `spyToken=`; // 寫入cookie
+
+                if (userData.success) {
                     this.name = '';
                     this.language = '';
                     this.body = 'bodyF';

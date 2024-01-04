@@ -19,5 +19,14 @@ export default defineConfig({
     alias: {
       '@': '/src'
     }
-  }
+  },
+  server: {
+    port: 5000, // http://localhost:5000/
+    proxy: {
+      '/api': {
+        target: 'http://127.0.0.1:8080', // 後端API伺服器domain
+        changeOrigin: true,
+      },
+    },
+  },
 })

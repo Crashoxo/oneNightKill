@@ -3,7 +3,8 @@ import axios from 'axios';
 // 創建axios
 const service = axios.create({
     // baseURL: '/api',
-    baseURL: 'https://vue3-course-api.hexschool.io/',
+    baseURL: '/api', // 在 vite.config.ts 設定了 proxy，所以 baseURL 可以直接設定為 /api
+    // baseURL: 'https://vue3-course-api.hexschool.io/',
     timeout: 80000
 });
 
