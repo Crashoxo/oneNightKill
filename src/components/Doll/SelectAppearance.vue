@@ -73,7 +73,7 @@ $dollCategoryUrl: (
 // 建立icon class
 @each $id, $iconName in $dollCategoryUrl {
     .doll-category-#{$id} {
-        @include iconMask("@/assets/icon/dollCategory/" + $iconName + ".svg");
+        @include iconMask("@/assets/icon/doll-category/" + $iconName + ".svg");
     }
 }
 
