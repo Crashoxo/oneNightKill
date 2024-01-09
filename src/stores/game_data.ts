@@ -73,16 +73,12 @@ export const useGameData = defineStore("gameData", {
                 //     "message": "登入成功"
                 // }
 
-                // 寫入cookie
+                
                 const { name, language, body, hair, hat, token, expired } = userData; //token、expired = data內的token、expired
+                console.log("token", token);
+                
+                // 寫入cookie
                 document.cookie = `spyToken=${token}; expired=${new Date(expired)}`;
-
-                // 從cookie spyToken拿出token
-                const pickCookieToken = document.cookie.replace(
-                    /(?:(?:^|.*;\s*)hexToken\s*=\s*([^;]*).*$)|^.*$/,
-                    "$1"
-                );
-                console.log("Token", pickCookieToken);
 
                 if (userData.success) {
                     this.name = name;
@@ -90,7 +86,7 @@ export const useGameData = defineStore("gameData", {
                     this.body = body;
                     this.hair = hair;
                     this.hat = hat;
-                    this.token = pickCookieToken;
+                    this.token = token;
                     
                 } else {
                     console.log("查無此帳號！視為快速登入");

@@ -15,7 +15,7 @@ import ShowDoll from "@/components/Doll/ShowDoll.vue";
 let crateName = ref("");
 // 取得使用者key的帳號密碼
 let userAccount = ref("littlegirlrou@yahoo.com.tw");
-let userPassword = ref("irisiris");
+let userPassword = ref("aaaaa");
 
 // 推Router
 const gameData = useGameData();
