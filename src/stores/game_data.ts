@@ -12,7 +12,7 @@ interface gameDataState {
     token: string;
 }
 
-// Vue層傳入的帳號資料
+// 存Vue層傳入的帳號資料
 interface userProfile {
     name: string;
     language: string;
@@ -20,6 +20,13 @@ interface userProfile {
     hair: string;
     hat: string;
     token: string;
+}
+
+// 存Vue層傳入的房間資料
+interface roomData {
+    roomName: string,
+    selectMaxPlayer: number,
+    roomBgUrl: string,
 }
 
 export const useGameData = defineStore("gameData", {
@@ -151,5 +158,10 @@ export const useGameData = defineStore("gameData", {
         setLanguage(selectLanguage: string ) {
             this.language = selectLanguage;
         },
+        // 新增房間
+        setRoom(roomData: roomData) {
+            console.log("接收到的房間資料，送後端寫進資料庫", roomData);
+        },
+        // 房間數量要用WS推波
     },
 });

@@ -3,6 +3,11 @@
 import { useRouter } from "vue-router";
 import { useGameData } from "@/stores/game_data";
 
+// 使用語系 這邊要寫在最上面
+import { seti18nLang } from "@/i18n/index";
+// i18n語系寫入
+seti18nLang("zh-tw");
+
 const gameData = useGameData();
 const router = useRouter();
 

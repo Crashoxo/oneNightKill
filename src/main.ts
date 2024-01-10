@@ -7,7 +7,10 @@ import router from './route/index'
 import './assets/css/tailwind.css'
 
 // 使用 vue-i18n
-// 方法: i18n/index > main.ts > App.vue > 看哪裡要用就import + const { t } = useI18n();
+// 1. 顯示語系方法: i18n/index > main.ts > App.vue > 看哪裡要顯示語系就用$t
+// 2. 要改語系方法如下:
+// import { seti18nLang } from "@/i18n/index";
+// seti18nLang("語系");
 import i18n from './i18n/index';
 
 // element-plus

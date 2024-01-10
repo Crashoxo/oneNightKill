@@ -3,9 +3,6 @@
 import { computed, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useGameData } from "@/stores/game_data";
-// 使用語系
-import { useI18n } from "vue-i18n";
-const { t } = useI18n();
 
 import SelectLanguageOption from "@/components/SelectLanguageOption.vue";
 import DollSystem from "@/components/Doll/DollSystem.vue";
