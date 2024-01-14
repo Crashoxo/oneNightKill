@@ -3,12 +3,14 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from "vue";
 import { useGameData } from "@/stores/game_data";
+import { useRouter } from "vue-router";
 import CrateRoom from "@/components/CrateRoom.vue";
 const gameData = useGameData();
+const router = useRouter();
 
 const gameRoomList = [
     {
-        id: 1,
+        id: "gameRoom1",
         name: "room1",
         player: 1,
         maxPlayer: 5,
@@ -16,7 +18,7 @@ const gameRoomList = [
         roomUrl: "001",
     },
     {
-        id: 2,
+        id: "gameRoom2",
         name: "room2",
         player: 1,
         maxPlayer: 2,
@@ -24,7 +26,7 @@ const gameRoomList = [
         roomUrl: "001",
     },
     {
-        id: 3,
+        id: "gameRoom3",
         name: "room3",
         player: 1,
         maxPlayer: 2,
@@ -32,7 +34,7 @@ const gameRoomList = [
         roomUrl: "001",
     },
     {
-        id: 4,
+        id: "gameRoom4",
         name: "room4",
         player: 1,
         maxPlayer: 2,
@@ -40,7 +42,7 @@ const gameRoomList = [
         roomUrl: "001",
     },
     {
-        id: 5,
+        id: "gameRoom5",
         name: "room5",
         player: 1,
         maxPlayer: 2,
@@ -48,7 +50,7 @@ const gameRoomList = [
         roomUrl: "001",
     },
     {
-        id: 6,
+        id: "gameRoom6",
         name: "room6",
         player: 1,
         maxPlayer: 2,
@@ -56,7 +58,7 @@ const gameRoomList = [
         roomUrl: "001",
     },
     {
-        id: 7,
+        id: "gameRoom7",
         name: "room6",
         player: 1,
         maxPlayer: 2,
@@ -64,7 +66,7 @@ const gameRoomList = [
         roomUrl: "001",
     },
     {
-        id: 8,
+        id: "gameRoom8",
         name: "room6",
         player: 1,
         maxPlayer: 2,
@@ -72,7 +74,7 @@ const gameRoomList = [
         roomUrl: "001",
     },
     {
-        id: 9,
+        id: "gameRoom9",
         name: "room6",
         player: 1,
         maxPlayer: 2,
@@ -80,7 +82,7 @@ const gameRoomList = [
         roomUrl: "001",
     },
     {
-        id: 10,
+        id: "gameRoom10",
         name: "room6",
         player: 1,
         maxPlayer: 2,
@@ -88,6 +90,10 @@ const gameRoomList = [
         roomUrl: "001",
     },
 ];
+
+function goToGameRoom(roomId: String) {
+    router.push({ name: 'Room', params: { id: roomId } });
+}
 
 onMounted(() => {});
 </script>
@@ -102,6 +108,7 @@ onMounted(() => {});
                     class="game-room-wrap"
                     :class="`game-rooms-bg-${gameRoom.roomUrl}`"
                     :key="gameRoom.id"
+                    @click="goToGameRoom(gameRoom.id)"
                 >
                     <div class="game-room-info">
                             <div class="game-room-status-havor">{{gameRoom.status}}</div>

@@ -2,6 +2,7 @@ import { createWebHistory, createRouter, RouteRecordRaw } from "vue-router";
 
 import logInPage from '../layouts/Main.vue';
 import GameRoomList from '../layouts/GameRoomList.vue';
+import GameRoom from '../layouts/GameRoom.vue';
 
 const routes: Array<RouteRecordRaw> = [
     // 登入帳號 Main.vue
@@ -13,13 +14,22 @@ const routes: Array<RouteRecordRaw> = [
             layout: logInPage
         }
     },
-    // 註冊帳號
+    // 房間列表
     {
         path: '/gameRoomList',
         name: 'gameRoomList',
         component: () => import('../layouts/GameRoomList.vue'),
         meta:{
             layout: GameRoomList
+        }
+    },
+    // 房間
+    {
+        path: '/room/:id',
+        name: 'Room',
+        component: () => import('../layouts/GameRoom.vue'),
+        meta:{
+            layout: GameRoom
         }
     }
     // {
