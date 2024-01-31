@@ -18,7 +18,7 @@ async function loadLocaleMessages(lang: string): Promise<void> {
         `../assets/locales/${lang}.ts`
     );
 
-    console.log("messages", messages.default);
+    // console.log("messages", messages.default);
 
     // set locale and locale message
     // 載入對應的語系檔

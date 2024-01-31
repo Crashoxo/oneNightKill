@@ -11,8 +11,8 @@ import ShowDoll from "@/components/Doll/ShowDoll.vue";
 // 註冊帳號名稱用
 let crateName = ref("");
 // 取得使用者key的帳號密碼
-let userAccount = ref("littlegirlrou@yahoo.com.tw");
-let userPassword = ref("aaaaa");
+let crateAccount = ref("littlegirlrou@yahoo.com.tw");
+let cratePassword = ref("aaaaa");
 
 // 推Router
 const gameData = useGameData();
@@ -31,9 +31,9 @@ const userRegistering = ref(false);
 function registeredAccount(): void {
     // 註冊資料
     const registerAccount = {
-        name: crateName.value,
-        username: userAccount.value,
-        password: userPassword.value,
+        userName: crateName.value,
+        userAccount: crateAccount.value,
+        userPassword: cratePassword.value,
     };
 
     // 打API
@@ -51,7 +51,7 @@ function logIn(): void {
     // 快速登入資料，控在版面上
     // 正常登入控在API的DB
     const userFastPass = {
-        name: userAccount.value,
+        name: crateAccount.value,
         language: language, // selectLanguage.value寫入store
         body: body, // dollCategoryId.value寫入store
         hair: hair, // dollCategoryId.value寫入store
@@ -61,8 +61,8 @@ function logIn(): void {
 
     // API需要傳入的資料
     const userAccountData = {
-        username: userAccount.value,
-        password: userPassword.value,
+        userAccount: crateAccount.value,
+        userPassword: cratePassword.value,
     };
 
     // 登入
@@ -118,11 +118,11 @@ onMounted(() => {});
                 </div>
                 <div class="account-area">
                     <div class="account-icon"></div>
-                    <input type="text" v-model="userAccount" required />
+                    <input type="text" v-model="crateAccount" required />
                 </div>
                 <div class="account-area">
                     <div class="password-icon"></div>
-                    <input type="text" v-model="userPassword" required />
+                    <input type="text" v-model="cratePassword" required />
                 </div>
                 <SelectLanguageOption class="m-1"/>
                 <div class="log-in-and-crate-account flex flex-row m-2">
@@ -140,11 +140,11 @@ onMounted(() => {});
                 <ShowDoll />
                 <div class="account-area">
                     <div class="account-icon"></div>
-                    <input type="text" v-model="userAccount" required />
+                    <input type="text" v-model="crateAccount" required />
                 </div>
                 <div class="account-area">
                     <div class="password-icon"></div>
-                    <input type="text" v-model="userPassword" />
+                    <input type="text" v-model="cratePassword" />
                 </div>
                 <SelectLanguageOption class="m-2"/>
                 <div class="log-in-and-crate-account flex flex-row m-1">

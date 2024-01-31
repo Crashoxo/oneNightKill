@@ -18,7 +18,15 @@ export function apiUserLogIn(params:object){
   })
 }
 // 登出
-export function apiUserLogOut(params:object){
+export function apiUserLogOut(){
+  return service.request({
+    method:'POST',
+    url:'/logout',
+  })
+}
+
+// 註冊帳號
+export function registerAccount(params:object){
   return service.request({
     method:'POST',
     url:'/logout',
